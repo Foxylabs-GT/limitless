@@ -1,0 +1,31 @@
+name: limitless
+description: A new Flutter project.
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  splash_screen_view: ^3.0.0
+  curved_navigation_bar: ^1.0.3
+  shared_preferences: ^2.0.15
+  date_time_picker: ^2.1.0
+
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon/icon.png
+
+
