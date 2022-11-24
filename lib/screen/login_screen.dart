@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:limitless/screen/start_menu.dart';
+import 'package:limitless/service/services.dart';
 import 'package:limitless/util/responsive.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,10 +13,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool? loading = false;
   @override
   Widget build(BuildContext context) {
     Responsive responsive = Responsive.of(context);
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
@@ -125,40 +129,57 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: responsive.hp(3),
                       ),
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).pushReplacement(PageRouteBuilder(
-                              pageBuilder: (BuildContext context, _, __) {
-                                return TabUserWidget(
-                                  page: 1,
-                                );
-                              }, transitionsBuilder:
-                              (_, Animation<double> animation, __, Widget child) {
-                            return FadeTransition(opacity: animation, child: child);
-                          }));
-                        },
-                        child: Container(
-                          width: responsive.width,
-                          height: responsive.hp(6.5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.black,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'LOGIN',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: responsive.dp(2.0),
-                                    fontWeight: FontWeight.w400),
+                      loading == true
+                          ? Container(
+                              width: responsive.width,
+                              height: responsive.hp(6.5),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [CircularProgressIndicator()],
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
+                            )
+                          : GestureDetector(
+                              onTap: () async {
+                                if (emailController.text != '' &&
+                                    passController.text != '') {
+                                  loading = true;
+                                  setState(() {});
+                                  await Services().login(emailController.text,
+                                      passController.text, context);
+                                  loading = false;
+                                  setState(() {});
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text('Hay campos vacios.'),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 1),
+                                  ));
+                                }
+                              },
+                              child: Container(
+                                width: responsive.width,
+                                height: responsive.hp(6.5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: Colors.black,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'LOGIN',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: responsive.dp(2.0),
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                       SizedBox(
                         height: responsive.hp(4),
                       ),

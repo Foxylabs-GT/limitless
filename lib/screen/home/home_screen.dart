@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:limitless/screen/home/class_reservation_screen.dart';
 import 'package:limitless/screen/home/class_screen.dart';
+import 'package:limitless/screen/login_screen.dart';
+import 'package:limitless/service/services.dart';
 import 'package:limitless/util/responsive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,6 +15,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List? dataHorary = ['a'];
+
+  loadUser() async {
+    dataHorary = await Services().ListHoraryAll();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     Responsive responsive = Responsive.of(context);
@@ -33,6 +51,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Flexible(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.clear();
+                          Navigator.of(context).pushReplacement(
+                              PageRouteBuilder(
+                                  pageBuilder: (BuildContext context, _, __) {
+                            return LoginScreen();
+                          }, transitionsBuilder: (_,
+                                      Animation<double> animation,
+                                      __,
+                                      Widget child) {
+                            return FadeTransition(
+                                opacity: animation, child: child);
+                          }));
+                        },
+                        child: Icon(
+                          Icons.exit_to_app,
+                          color: Colors.white,
+                          size: responsive.dp(3),
+                        ),
+                      )),
+                  SizedBox(
+                    width: responsive.wp(5),
+                  ),
                   Expanded(
                     flex: 4,
                     child: Text(
@@ -45,21 +90,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
-                    width: responsive.wp(10),
+                    width: responsive.wp(5),
                   ),
                   Flexible(
                       flex: 2,
                       child: GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Navigator.push(
                               context,
-                              PageRouteBuilder(pageBuilder:
-                                  (BuildContext context, _, __) {
+                              PageRouteBuilder(
+                                  pageBuilder: (BuildContext context, _, __) {
                                 return ClassScreen();
                               }, transitionsBuilder: (_,
-                                  Animation<double> animation,
-                                  __,
-                                  Widget child) {
+                                      Animation<double> animation,
+                                      __,
+                                      Widget child) {
                                 return FadeTransition(
                                     opacity: animation, child: child);
                               }));
@@ -73,189 +118,203 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Flexible(
-                child: ListView(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 30, right: 30),
-                  child: Column(
+            dataHorary.toString() == '[a]'
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: responsive.hp(3),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        width: responsive.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.black,
-                        ),
+                      SizedBox(height: 100),
+                      CircularProgressIndicator()
+                    ],
+                  )
+                : Flexible(
+                    child: ListView.builder(
+                    itemCount: dataHorary?.length,
+                    itemBuilder: (context, i) {
+                      return Container(
+                        margin: EdgeInsets.only(left: 30, right: 30),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'POLE DANCE',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'HORA:',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '7:00 PM',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.end,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'LUGAR:',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'Salon 3',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.end,
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: responsive.hp(1),
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'LUISA PEREREZ',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'LIBRES:',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '4',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.end,
-                                  ),
-                                )
-                              ],
-                            ),
                             SizedBox(
                               height: responsive.hp(3),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    PageRouteBuilder(pageBuilder:
-                                        (BuildContext context, _, __) {
-                                      return ClassReservationScreen();
-                                    }, transitionsBuilder: (_,
-                                        Animation<double> animation,
-                                        __,
-                                        Widget child) {
-                                      return FadeTransition(
-                                          opacity: animation, child: child);
-                                    }));
-                                // Navigator.of(context).pushReplacement(
-                                //     PageRouteBuilder(pageBuilder:
-                                //         (BuildContext context, _, __) {
-                                //   return ClassReservationScreen();
-                                // }, transitionsBuilder: (_,
-                                //         Animation<double> animation,
-                                //         __,
-                                //         Widget child) {
-                                //   return FadeTransition(
-                                //       opacity: animation, child: child);
-                                // }));
-                              },
-                              child: Container(
-                                width: responsive.width,
-                                height: responsive.hp(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: Colors.white,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'RESERVAR',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: responsive.dp(2.0),
-                                          fontWeight: FontWeight.w600),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              width: responsive.width,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: Colors.black,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          dataHorary?[i]['clase']['nombre'],
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2.0),
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'HORA:',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2.0),
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          DateFormat("HH:mm").format(DateTime.parse(dataHorary?[i]['fechaHora'])).toString(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2.0),
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'LUGAR:',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2.0),
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          dataHorary?[i]['lugar']['nombre'],
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2.0),
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: responsive.hp(1),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          dataHorary?[i]['academia']['nombre'].toString()??'',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2.0),
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'LIBRES:',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2.0),
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          dataHorary?[i]['cantidad'].toString()??'',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2.0),
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: responsive.hp(3),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          PageRouteBuilder(pageBuilder:
+                                              (BuildContext context, _, __) {
+                                            return ClassReservationScreen(id: dataHorary?[i]['id'].toString(),);
+                                          }, transitionsBuilder: (_,
+                                              Animation<double> animation,
+                                              __,
+                                              Widget child) {
+                                            return FadeTransition(
+                                                opacity: animation,
+                                                child: child);
+                                          }));
+                                      // Navigator.of(context).pushReplacement(
+                                      //     PageRouteBuilder(pageBuilder:
+                                      //         (BuildContext context, _, __) {
+                                      //   return ClassReservationScreen();
+                                      // }, transitionsBuilder: (_,
+                                      //         Animation<double> animation,
+                                      //         __,
+                                      //         Widget child) {
+                                      //   return FadeTransition(
+                                      //       opacity: animation, child: child);
+                                      // }));
+                                    },
+                                    child: Container(
+                                      width: responsive.width,
+                                      height: responsive.hp(5),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        color: Colors.white,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'RESERVAR',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: responsive.dp(2.0),
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ))
+                      );
+                    },
+                  ))
           ],
         ),
         floatingActionButton: FloatingActionButton(

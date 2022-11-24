@@ -1,14 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:limitless/service/services.dart';
 import 'package:limitless/util/responsive.dart';
+import 'package:intl/intl.dart';
 
 class ClassReservationScreen extends StatefulWidget {
-  const ClassReservationScreen({Key? key}) : super(key: key);
+  ClassReservationScreen({Key? key, this.id}) : super(key: key);
+  String? id;
 
   @override
   State<ClassReservationScreen> createState() => _ClassReservationScreenState();
 }
 
 class _ClassReservationScreenState extends State<ClassReservationScreen> {
+  List? dataHorarydetaild = ['a'];
+  List? student;
+
+  loadUser() async {
+    dataHorarydetaild = await Services().HoraryDetail(widget.id);
+    student = dataHorarydetaild?[0]['alumnos'];
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     Responsive responsive = Responsive.of(context);
@@ -16,7 +35,18 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(0.0), // here the desired height
             child: AppBar()),
-        body: Column(
+        body: dataHorarydetaild.toString() == '[a]'
+            ? Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 400),
+              CircularProgressIndicator()
+            ],
+          ),
+        )
+            : Column(
           children: [
             Container(
               width: responsive.width,
@@ -66,7 +96,7 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  'HORA: 7:00 PM',
+                                  'HORA: '+DateFormat("HH:mm").format(DateTime.parse(dataHorarydetaild?[0]['fechaHora'])).toString(),
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: responsive.dp(1.6),
@@ -148,7 +178,7 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  'LIBRES: 4',
+                                  'LIBRES: ${dataHorarydetaild?[0]['cantidad'].toString()??''}',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: responsive.dp(1.6),
@@ -199,57 +229,16 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
                   ],
                 )),
             SizedBox(
-              height: responsive.hp(1),
+              height: responsive.hp(3),
             ),
             Flexible(
-                child: ListView(
-              children: [
-                SizedBox(
-                  height: responsive.hp(3),
-                ),
-                Container(
+                child: ListView.builder(
+              itemCount: student?.length,
+              itemBuilder: (context, i) {
+                return Container(
                   margin: EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     children: [
-                      Container(
-                        width: responsive.width,
-                        height: responsive.hp(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: Colors.grey),
-                          color: Colors.transparent,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                margin: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: Colors.lightGreen,
-                                  shape: BoxShape.circle
-                                ),
-                              )
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Text(
-                                'Marta L. Perez',
-                                style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: responsive.dp(2.5),
-                                    fontWeight: FontWeight.w600),
-                                textAlign: TextAlign.center,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: responsive.hp(2),
-                      ),
                       Container(
                         width: responsive.width,
                         height: responsive.hp(8),
@@ -268,14 +257,12 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
                                   margin: EdgeInsets.all(5),
                                   decoration: BoxDecoration(
                                       color: Colors.lightGreen,
-                                      shape: BoxShape.circle
-                                  ),
-                                )
-                            ),
+                                      shape: BoxShape.circle),
+                                )),
                             Expanded(
                               flex: 4,
                               child: Text(
-                                'Marta L. Perez',
+                                '${student?[i]['nombre']} ${student?[i]['apellido']}',
                                 style: TextStyle(
                                     color: Colors.black54,
                                     fontSize: responsive.dp(2.5),
@@ -285,12 +272,18 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
                             )
                           ],
                         ),
-                      )
+                      ),
+                      SizedBox(
+                        height: responsive.hp(2),
+                      ),
                     ],
                   ),
-                )
-              ],
-            ))
+                );
+              },
+            )),
+            SizedBox(
+              height: responsive.hp(1),
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(

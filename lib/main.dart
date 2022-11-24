@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:limitless/screen/login_screen.dart';
+import 'package:limitless/screen/start_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 
@@ -33,24 +34,23 @@ class SplashScreenn extends StatefulWidget {
 class SplashScreennState extends State<SplashScreenn> {
   String idUser = "";
 
-  // loadUser() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     idUser = prefs.getString("idTransactionFic") ?? '';
-  //   });
-  // }
+  loadUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      idUser = prefs.getString("idUserLimitless") ?? '';
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    //loadUser();
+    loadUser();
   }
 
   @override
   Widget build(BuildContext context) {
     return SplashScreenView(
-      //navigateRoute: (idUser == '') ? LoginScreen() : StartMenuScreen(),
-      navigateRoute: LoginScreen(),
+      navigateRoute: (idUser == '') ? LoginScreen() : TabUserWidget(page: 1),
       duration: 5000,
       imageSize: 150,
       imageSrc: "assets/icon/icon.png",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:limitless/service/services.dart';
 import 'package:limitless/util/responsive.dart';
 
 class ClassScreen extends StatefulWidget {
@@ -9,6 +10,20 @@ class ClassScreen extends StatefulWidget {
 }
 
 class _ClassScreenState extends State<ClassScreen> {
+  List? dataHoraryStudent = ['a'];
+
+  loadUser() async {
+    dataHoraryStudent = await Services().HoraryStudent();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     Responsive responsive = Responsive.of(context);
@@ -110,138 +125,148 @@ class _ClassScreenState extends State<ClassScreen> {
                 ],
               ),
             ),
-            Flexible(
-                child: ListView(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 30, right: 30),
-                  child: Column(
+            dataHoraryStudent.toString() == '[a]'
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: responsive.hp(3),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        width: responsive.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.black,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'POLE DANCE',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'HORA:',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '7:00 PM',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.end,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'LUGAR:',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'Salon 3',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.end,
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: responsive.hp(1),
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'LUISA PEREREZ',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'LIBRES:',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '4',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsive.dp(2.0),
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.end,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                      SizedBox(height: 100),
+                      CircularProgressIndicator()
                     ],
-                  ),
-                )
-              ],
-            ))
+                  )
+                : Flexible(
+                    child: ListView.builder(
+                        itemCount: dataHoraryStudent?.length,
+                        itemBuilder: (context, i) {
+                          return Container(
+                            margin: EdgeInsets.only(left: 30, right: 30),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: responsive.hp(3),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  width: responsive.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: Colors.black,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'POLE DANCE',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'HORA:',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              '7:00 PM',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'LUGAR:',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              'Salon 3',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: responsive.hp(1),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'LUISA PEREREZ',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'LIBRES:',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              '4',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }))
           ],
         ),
         floatingActionButton: FloatingActionButton(
