@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:limitless/service/services.dart';
 import 'package:limitless/util/responsive.dart';
+import 'package:intl/intl.dart';
 
 class ClassScreen extends StatefulWidget {
   const ClassScreen({Key? key}) : super(key: key);
@@ -134,6 +135,15 @@ class _ClassScreenState extends State<ClassScreen> {
                       CircularProgressIndicator()
                     ],
                   )
+                : dataHoraryStudent?.length == 0
+                ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: responsive.hp(30)),
+                Text('No se encontraron nuevos horarios reservados')
+              ],
+            )
                 : Flexible(
                     child: ListView.builder(
                         itemCount: dataHoraryStudent?.length,
@@ -161,7 +171,7 @@ class _ClassScreenState extends State<ClassScreen> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              'POLE DANCE',
+                                              dataHoraryStudent?[i]['clase']['nombre'],
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: responsive.dp(2.0),
@@ -185,7 +195,11 @@ class _ClassScreenState extends State<ClassScreen> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              '7:00 PM',
+                                              DateFormat("HH:mm")
+                                                  .format(DateTime.parse(
+                                                  dataHoraryStudent?[i]
+                                                  ['fechaHora']))
+                                                  .toString(),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: responsive.dp(2.0),
@@ -209,7 +223,7 @@ class _ClassScreenState extends State<ClassScreen> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              'Salon 3',
+                                          dataHoraryStudent?[i]['lugar']['nombre'],
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: responsive.dp(2.0),
@@ -226,7 +240,10 @@ class _ClassScreenState extends State<ClassScreen> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              'LUISA PEREREZ',
+                                              dataHoraryStudent?[i]['academia']
+                                              ['nombre']
+                                                  .toString() ??
+                                                  '',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: responsive.dp(2.0),
@@ -250,7 +267,9 @@ class _ClassScreenState extends State<ClassScreen> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              '4',
+                                              dataHoraryStudent?[i]['cantidad']
+                                                  .toString() ??
+                                                  '',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: responsive.dp(2.0),

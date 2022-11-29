@@ -14,8 +14,6 @@ class Services {
     dio.options.connectTimeout = connectTimeout;
     dio.options.receiveTimeout = receiveTimeout;
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove("linkscrennvalidation");
-    await prefs.setString('linkscrennvalidation', 'Start');
     final data = {
       "correo": email,
       "password": password,
@@ -74,7 +72,7 @@ class Services {
     //idUser = prefs.getString('idUserLimitless');
     //final data = {"patient_idpatient": idUser};
     try {
-      final response = await dio.get(url + '/api/horario');
+      final response = await dio.get(url + '/api/horario_adelante');
       if (response.statusCode == 200) {
         print("datos de api");
         print(response.data.toString());
@@ -114,6 +112,42 @@ class Services {
         print("datos de api");
         print(response.data.toString());
         return [response.data];
+      }
+    } catch (err) {
+      print(err);
+      return [];
+    }
+  }
+
+  Future<List?> MessageUser() async {
+    dio.options.connectTimeout = connectTimeout;
+    dio.options.receiveTimeout = receiveTimeout;
+    String? idUser;
+    final prefs = await SharedPreferences.getInstance();
+    idUser = prefs.getString('idUserLimitless');
+    try {
+      final response = await dio.get(url +'/api/mensaje/receptor/$idUser');
+      if (response.statusCode == 200) {
+        print("datos de api");
+        print(response.data.toString());
+        return response.data;
+      }
+    } catch (err) {
+      print(err);
+      return [];
+    }
+  }
+
+  Future<List?> ListHoraryDate(String date) async {
+    dio.options.connectTimeout = connectTimeout;
+    dio.options.receiveTimeout = receiveTimeout;
+    final data = {"fechaInicio": date, "fechaFin": date};
+    try {
+      final response = await dio.post(url + '/api/horario_fecha', data: data);
+      if (response.statusCode == 200) {
+        print("datos de api");
+        print(response.data.toString());
+        return response.data;
       }
     } catch (err) {
       print(err);

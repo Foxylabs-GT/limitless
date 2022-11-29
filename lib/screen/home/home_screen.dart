@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: GestureDetector(
                         onTap: () async {
                           final prefs = await SharedPreferences.getInstance();
+                          prefs.remove('idUserLimitless');
                           await prefs.clear();
                           Navigator.of(context).pushReplacement(
                               PageRouteBuilder(
@@ -123,198 +124,224 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 100),
+                      SizedBox(height: responsive.hp(30)),
                       CircularProgressIndicator()
                     ],
                   )
-                : Flexible(
-                    child: ListView.builder(
-                    itemCount: dataHorary?.length,
-                    itemBuilder: (context, i) {
-                      return Container(
-                        margin: EdgeInsets.only(left: 30, right: 30),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: responsive.hp(3),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(20),
-                              width: responsive.width,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Colors.black,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
+                : dataHorary?.length == 0
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(height: responsive.hp(30)),
+                          Text(
+                              'No se encontraron nuevos horarios para reservar.')
+                        ],
+                      )
+                    : Flexible(
+                        child: ListView.builder(
+                        itemCount: dataHorary?.length,
+                        itemBuilder: (context, i) {
+                          return Container(
+                            margin: EdgeInsets.only(left: 30, right: 30),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: responsive.hp(3),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  width: responsive.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: Colors.black,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      Expanded(
-                                        child: Text(
-                                          dataHorary?[i]['clase']['nombre'],
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: responsive.dp(2.0),
-                                              fontWeight: FontWeight.w500),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'HORA:',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: responsive.dp(2.0),
-                                              fontWeight: FontWeight.w500),
-                                          textAlign: TextAlign.start,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          DateFormat("HH:mm").format(DateTime.parse(dataHorary?[i]['fechaHora'])).toString(),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: responsive.dp(2.0),
-                                              fontWeight: FontWeight.w500),
-                                          textAlign: TextAlign.end,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'LUGAR:',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: responsive.dp(2.0),
-                                              fontWeight: FontWeight.w500),
-                                          textAlign: TextAlign.start,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          dataHorary?[i]['lugar']['nombre'],
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: responsive.dp(2.0),
-                                              fontWeight: FontWeight.w500),
-                                          textAlign: TextAlign.end,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: responsive.hp(1),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          dataHorary?[i]['academia']['nombre'].toString()??'',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: responsive.dp(2.0),
-                                              fontWeight: FontWeight.w500),
-                                          textAlign: TextAlign.start,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'LIBRES:',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: responsive.dp(2.0),
-                                              fontWeight: FontWeight.w500),
-                                          textAlign: TextAlign.start,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          dataHorary?[i]['cantidad'].toString()??'',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: responsive.dp(2.0),
-                                              fontWeight: FontWeight.w500),
-                                          textAlign: TextAlign.end,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: responsive.hp(3),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          PageRouteBuilder(pageBuilder:
-                                              (BuildContext context, _, __) {
-                                            return ClassReservationScreen(id: dataHorary?[i]['id'].toString(),);
-                                          }, transitionsBuilder: (_,
-                                              Animation<double> animation,
-                                              __,
-                                              Widget child) {
-                                            return FadeTransition(
-                                                opacity: animation,
-                                                child: child);
-                                          }));
-                                      // Navigator.of(context).pushReplacement(
-                                      //     PageRouteBuilder(pageBuilder:
-                                      //         (BuildContext context, _, __) {
-                                      //   return ClassReservationScreen();
-                                      // }, transitionsBuilder: (_,
-                                      //         Animation<double> animation,
-                                      //         __,
-                                      //         Widget child) {
-                                      //   return FadeTransition(
-                                      //       opacity: animation, child: child);
-                                      // }));
-                                    },
-                                    child: Container(
-                                      width: responsive.width,
-                                      height: responsive.hp(5),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        color: Colors.white,
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                      Row(
                                         children: [
-                                          Text(
-                                            'RESERVAR',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: responsive.dp(2.0),
-                                                fontWeight: FontWeight.w600),
-                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              dataHorary?[i]['clase']['nombre'],
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          )
                                         ],
                                       ),
-                                    ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'HORA:',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              DateFormat("HH:mm")
+                                                  .format(DateTime.parse(
+                                                      dataHorary?[i]
+                                                          ['fechaHora']))
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'LUGAR:',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              dataHorary?[i]['lugar']['nombre'],
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: responsive.hp(1),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              dataHorary?[i]['academia']
+                                                          ['nombre']
+                                                      .toString() ??
+                                                  '',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'LIBRES:',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              dataHorary?[i]['cantidad']
+                                                      .toString() ??
+                                                  '',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: responsive.hp(3),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              PageRouteBuilder(pageBuilder:
+                                                  (BuildContext context, _,
+                                                      __) {
+                                                return ClassReservationScreen(
+                                                  id: dataHorary?[i]['id']
+                                                      .toString(),
+                                                );
+                                              }, transitionsBuilder: (_,
+                                                  Animation<double> animation,
+                                                  __,
+                                                  Widget child) {
+                                                return FadeTransition(
+                                                    opacity: animation,
+                                                    child: child);
+                                              }));
+                                          // Navigator.of(context).pushReplacement(
+                                          //     PageRouteBuilder(pageBuilder:
+                                          //         (BuildContext context, _, __) {
+                                          //   return ClassReservationScreen();
+                                          // }, transitionsBuilder: (_,
+                                          //         Animation<double> animation,
+                                          //         __,
+                                          //         Widget child) {
+                                          //   return FadeTransition(
+                                          //       opacity: animation, child: child);
+                                          // }));
+                                        },
+                                        child: Container(
+                                          width: responsive.width,
+                                          height: responsive.hp(5),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            color: Colors.white,
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'RESERVAR',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize:
+                                                        responsive.dp(2.0),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ))
+                          );
+                        },
+                      ))
           ],
         ),
         floatingActionButton: FloatingActionButton(

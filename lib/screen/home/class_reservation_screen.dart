@@ -37,255 +37,284 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
             child: AppBar()),
         body: dataHorarydetaild.toString() == '[a]'
             ? Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 400),
-              CircularProgressIndicator()
-            ],
-          ),
-        )
-            : Column(
-          children: [
-            Container(
-              width: responsive.width,
-              height: responsive.hp(13),
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(60.0),
-                    bottomRight: Radius.circular(60.0)),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'POLE DANCE',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: responsive.dp(2.5),
-                          fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-                margin: EdgeInsets.only(left: 20, right: 20),
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: responsive.hp(3),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: responsive.width,
-                            height: responsive.hp(5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.black,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'HORA: '+DateFormat("HH:mm").format(DateTime.parse(dataHorarydetaild?[0]['fechaHora'])).toString(),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: responsive.dp(1.6),
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: responsive.wp(1),
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: responsive.width,
-                            height: responsive.hp(5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.black,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'LUGAR: Salon 3',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: responsive.dp(1.6),
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: responsive.hp(2),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: responsive.width,
-                            height: responsive.hp(5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.black,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'LUISA PEREREZ',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: responsive.dp(1.6),
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: responsive.wp(1),
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: responsive.width,
-                            height: responsive.hp(5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.black,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'LIBRES: ${dataHorarydetaild?[0]['cantidad'].toString()??''}',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: responsive.dp(1.6),
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: responsive.hp(3),
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          // Navigator.of(context).pushReplacement(PageRouteBuilder(
-                          //     pageBuilder: (BuildContext context, _, __) {
-                          //       return TabUserWidget(
-                          //         page: 1,
-                          //       );
-                          //     }, transitionsBuilder:
-                          //     (_, Animation<double> animation, __, Widget child) {
-                          //   return FadeTransition(opacity: animation, child: child);
-                          // }));
-                        },
-                        child: Container(
-                          width: responsive.width,
-                          height: responsive.hp(5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.black,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'RESERVAR',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: responsive.dp(2.0),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                        )),
+                    SizedBox(height: responsive.hp(30)),
+                    CircularProgressIndicator()
                   ],
-                )),
-            SizedBox(
-              height: responsive.hp(3),
-            ),
-            Flexible(
-                child: ListView.builder(
-              itemCount: student?.length,
-              itemBuilder: (context, i) {
-                return Container(
-                  margin: EdgeInsets.only(left: 20, right: 20),
-                  child: Column(
+                ),
+              )
+            : dataHorarydetaild?.length == 0
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: responsive.hp(30)),
+                      Text('No se encontraron nuevos horarios reservados')
+                    ],
+                  )
+                : Column(
                     children: [
                       Container(
                         width: responsive.width,
-                        height: responsive.hp(8),
+                        height: responsive.hp(13),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: Colors.grey),
-                          color: Colors.transparent,
+                          color: Colors.black,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(60.0),
+                              bottomRight: Radius.circular(60.0)),
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Expanded(
-                                flex: 1,
-                                child: Container(
-                                  margin: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.lightGreen,
-                                      shape: BoxShape.circle),
-                                )),
-                            Expanded(
-                              flex: 4,
                               child: Text(
-                                '${student?[i]['nombre']} ${student?[i]['apellido']}',
+                                'POLE DANCE',
                                 style: TextStyle(
-                                    color: Colors.black54,
+                                    color: Colors.white,
                                     fontSize: responsive.dp(2.5),
                                     fontWeight: FontWeight.w600),
                                 textAlign: TextAlign.center,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
+                      Container(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: responsive.hp(3),
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      width: responsive.width,
+                                      height: responsive.hp(5),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        color: Colors.black,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'HORA: ' +
+                                                DateFormat("HH:mm")
+                                                    .format(DateTime.parse(
+                                                        dataHorarydetaild?[0]
+                                                            ['fechaHora']))
+                                                    .toString(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: responsive.dp(1.6),
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: responsive.wp(1),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      width: responsive.width,
+                                      height: responsive.hp(5),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        color: Colors.black,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'LUGAR: Salon 3',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: responsive.dp(1.6),
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: responsive.hp(2),
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      width: responsive.width,
+                                      height: responsive.hp(5),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        color: Colors.black,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'LUISA PEREREZ',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: responsive.dp(1.6),
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: responsive.wp(1),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      width: responsive.width,
+                                      height: responsive.hp(5),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        color: Colors.black,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'LIBRES: ${dataHorarydetaild?[0]['cantidad'].toString() ?? ''}',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: responsive.dp(1.6),
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: responsive.hp(3),
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    // Navigator.of(context).pushReplacement(PageRouteBuilder(
+                                    //     pageBuilder: (BuildContext context, _, __) {
+                                    //       return TabUserWidget(
+                                    //         page: 1,
+                                    //       );
+                                    //     }, transitionsBuilder:
+                                    //     (_, Animation<double> animation, __, Widget child) {
+                                    //   return FadeTransition(opacity: animation, child: child);
+                                    // }));
+                                  },
+                                  child: Container(
+                                    width: responsive.width,
+                                    height: responsive.hp(5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      color: Colors.black,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'RESERVAR',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2.0),
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ],
+                          )),
                       SizedBox(
-                        height: responsive.hp(2),
+                        height: responsive.hp(3),
+                      ),
+                      Flexible(
+                          child: ListView.builder(
+                        itemCount: student?.length,
+                        itemBuilder: (context, i) {
+                          return Container(
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: responsive.width,
+                                  height: responsive.hp(8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    border: Border.all(color: Colors.grey),
+                                    color: Colors.transparent,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            margin: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                                color: Colors.lightGreen,
+                                                shape: BoxShape.circle),
+                                          )),
+                                      Expanded(
+                                        flex: 4,
+                                        child: Text(
+                                          '${student?[i]['nombre']} ${student?[i]['apellido']}',
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: responsive.dp(2.5),
+                                              fontWeight: FontWeight.w600),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: responsive.hp(2),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      )),
+                      SizedBox(
+                        height: responsive.hp(1),
                       ),
                     ],
                   ),
-                );
-              },
-            )),
-            SizedBox(
-              height: responsive.hp(1),
-            ),
-          ],
-        ),
         floatingActionButton: FloatingActionButton(
             elevation: 1.0,
             child: Column(
