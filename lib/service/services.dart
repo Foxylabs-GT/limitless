@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:limitless/screen/start_menu.dart';
+import 'package:limitless/util/widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Services {
@@ -91,7 +92,26 @@ class Services {
     final prefs = await SharedPreferences.getInstance();
     idUser = prefs.getString('idUserLimitless');
     try {
-      final response = await dio.get(url + '/api/horario-alumno/alumno/$idUser');
+      final response = await dio.get(url + '/api/horario-alumno/alumno_dia_adelante/$idUser');
+      if (response.statusCode == 200) {
+        print("datos de api");
+        print(response.data.toString());
+        return response.data['horarios'];
+      }
+    } catch (err) {
+      print(err);
+      return [];
+    }
+  }
+
+  Future<List?> HoraryStudentDate() async {
+    dio.options.connectTimeout = connectTimeout;
+    dio.options.receiveTimeout = receiveTimeout;
+    String? idUser;
+    final prefs = await SharedPreferences.getInstance();
+    idUser = prefs.getString('idUserLimitless');
+    try {
+      final response = await dio.get(url + '/api/horario-alumno/alumno_dia/$idUser');
       if (response.statusCode == 200) {
         print("datos de api");
         print(response.data.toString());
@@ -152,6 +172,27 @@ class Services {
     } catch (err) {
       print(err);
       return [];
+    }
+  }
+
+  Future<bool?> ReservationHorary(BuildContext context, String horarioId) async {
+    dio.options.connectTimeout = connectTimeout;
+    dio.options.receiveTimeout = receiveTimeout;
+    String? idUser;
+    final prefs = await SharedPreferences.getInstance();
+    idUser = prefs.getString('idUserLimitless');
+    final data = {"horarioId": horarioId, "alumnoId": idUser};
+    try {
+      final response = await dio.post(url + '/api/horario-alumno/asignar', data: data);
+      if (response.statusCode == 200) {
+        print("datos de api");
+        print(response.data.toString());
+        return true;
+      }
+    } on DioError catch (e) {
+      print(e);
+      alertMessageReserve(context, e.response?.data['error']);
+      return false;
     }
   }
 

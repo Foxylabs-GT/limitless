@@ -16,9 +16,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List? dataHorary = ['a'];
+  List? dataHoraryDate = [];
 
   loadUser() async {
     dataHorary = await Services().ListHoraryAll();
+    dataHoraryDate = await Services().HoraryStudentDate();
     setState(() {});
   }
 
@@ -351,7 +353,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '3',
+                  dataHoraryDate?.length.toString()??'',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14,

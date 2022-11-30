@@ -14,6 +14,7 @@ class ClassReservationScreen extends StatefulWidget {
 class _ClassReservationScreenState extends State<ClassReservationScreen> {
   List? dataHorarydetaild = ['a'];
   List? student;
+  bool? loading = false;
 
   loadUser() async {
     dataHorarydetaild = await Services().HoraryDetail(widget.id);
@@ -219,41 +220,62 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
                               SizedBox(
                                 height: responsive.hp(3),
                               ),
-                              GestureDetector(
-                                  onTap: () {
-                                    // Navigator.of(context).pushReplacement(PageRouteBuilder(
-                                    //     pageBuilder: (BuildContext context, _, __) {
-                                    //       return TabUserWidget(
-                                    //         page: 1,
-                                    //       );
-                                    //     }, transitionsBuilder:
-                                    //     (_, Animation<double> animation, __, Widget child) {
-                                    //   return FadeTransition(opacity: animation, child: child);
-                                    // }));
-                                  },
-                                  child: Container(
-                                    width: responsive.width,
-                                    height: responsive.hp(5),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      color: Colors.black,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'RESERVAR',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: responsive.dp(2.0),
-                                              fontWeight: FontWeight.w600),
+                              loading == false
+                                  ? GestureDetector(
+                                      onTap: () async {
+                                        loading = true;
+                                        setState(() {});
+                                        bool? validation = await Services().ReservationHorary(
+                                            context, widget.id.toString());
+                                        if(validation == true){
+
+                                        }else{
+                                          loading = false;
+                                          setState(() {});
+                                        }
+                                        // Navigator.of(context).pushReplacement(PageRouteBuilder(
+                                        //     pageBuilder: (BuildContext context, _, __) {
+                                        //       return TabUserWidget(
+                                        //         page: 1,
+                                        //       );
+                                        //     }, transitionsBuilder:
+                                        //     (_, Animation<double> animation, __, Widget child) {
+                                        //   return FadeTransition(opacity: animation, child: child);
+                                        // }));
+                                      },
+                                      child: Container(
+                                        width: responsive.width,
+                                        height: responsive.hp(5),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          color: Colors.black,
                                         ),
-                                      ],
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'RESERVAR',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsive.dp(2.0),
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ],
+                                        ),
+                                      ))
+                                  : Container(
+                                      child: Column(
+                                        children: [
+                                          CircularProgressIndicator(
+                                            color: Colors.black,
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  )),
                             ],
                           )),
                       SizedBox(
