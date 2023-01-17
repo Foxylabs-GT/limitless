@@ -1,0 +1,4 @@
+storePassword=limitless
+keyPassword=limitless
+keyAlias=limitless
+storeFile=../limitless.jks

@@ -191,11 +191,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              DateFormat("HH:mm")
+                                          dataHorary?[i]
+                                          ['fechaHora'] != null?DateFormat("HH:mm")
                                                   .format(DateTime.parse(
                                                       dataHorary?[i]
                                                           ['fechaHora']))
-                                                  .toString(),
+                                                  .toString():'00:00',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: responsive.dp(2.0),

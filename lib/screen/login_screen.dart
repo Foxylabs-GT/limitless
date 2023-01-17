@@ -35,6 +35,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius:
                     BorderRadius.only(bottomLeft: Radius.circular(40.0)),
               ),
+              child: Column(
+                children: [
+                  Image.asset('assets/icon/Limitless.jpg', width: responsive.wp(70),)
+                ],
+              ),
             ),
             Flexible(
                 child: ListView(

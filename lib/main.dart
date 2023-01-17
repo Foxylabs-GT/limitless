@@ -53,7 +53,7 @@ class SplashScreennState extends State<SplashScreenn> {
       navigateRoute: (idUser == '') ? LoginScreen() : TabUserWidget(page: 1),
       duration: 5000,
       imageSize: 150,
-      imageSrc: "assets/icon/icon.png",
+      imageSrc: "assets/icon/icon.jpg",
       backgroundColor: Colors.white,
     );
   }

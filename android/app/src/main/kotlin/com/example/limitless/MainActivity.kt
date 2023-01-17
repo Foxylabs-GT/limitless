@@ -1,4 +1,4 @@
-package com.example.limitless
+package com.io.limitless
 
 import io.flutter.embedding.android.FlutterActivity
 
