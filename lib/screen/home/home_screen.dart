@@ -192,10 +192,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Expanded(
                                             child: Text(
                                           dataHorary?[i]
-                                          ['fechaHora'] != null?DateFormat("HH:mm")
-                                                  .format(DateTime.parse(
-                                                      dataHorary?[i]
-                                                          ['fechaHora']))
+                                          ['fechaFin'] != null?DateFormat("HH:mm")
+                                                  .format(DateTime.parse('${dataHorary?[i]['fechaFin']} ${dataHorary?[i]['horaFin']}'))
                                                   .toString():'00:00',
                                               style: TextStyle(
                                                   color: Colors.white,

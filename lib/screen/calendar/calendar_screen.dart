@@ -68,8 +68,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         data: ThemeData(primarySwatch: Colors.grey),
                         child: DateTimePicker(
                           controller: searchController,
-                          firstDate: DateTime(1600),
-                          lastDate: DateTime.now().add(Duration(days: 60)),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(Duration(days: 15)),
                           style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -186,9 +186,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     Expanded(
                                       child: Text(
                                         DateFormat("HH:mm")
-                                            .format(DateTime.parse(
-                                            dataHorary?[i]
-                                            ['fechaHora']))
+                                            .format(DateTime.parse('${dataHorary?[i]['fechaFin']} ${dataHorary?[i]['horaFin']}'))
                                             .toString(),
                                         style: TextStyle(
                                             color: Colors.white,

@@ -196,9 +196,7 @@ class _ClassScreenState extends State<ClassScreen> {
                                           Expanded(
                                             child: Text(
                                               DateFormat("HH:mm")
-                                                  .format(DateTime.parse(
-                                                  dataHoraryStudent?[i]
-                                                  ['fechaHora']))
+                                                  .format(DateTime.parse('${dataHoraryStudent?[i]['fechaFin']} ${dataHoraryStudent?[i]['horaFin']}'))
                                                   .toString(),
                                               style: TextStyle(
                                                   color: Colors.white,

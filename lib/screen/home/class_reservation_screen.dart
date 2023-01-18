@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:limitless/screen/start_menu.dart';
 import 'package:limitless/service/services.dart';
 import 'package:limitless/util/responsive.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +16,7 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
   List? dataHorarydetaild = ['a'];
   List? student;
   bool? loading = false;
+  bool? reservation = false;
 
   loadUser() async {
     dataHorarydetaild = await Services().HoraryDetail(widget.id);
@@ -26,6 +28,8 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('AAAAAAAAAAAAAAAAAA');
+    print(widget.id);
     loadUser();
   }
 
@@ -111,9 +115,7 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
                                           Text(
                                             'HORA: ' +
                                                 DateFormat("HH:mm")
-                                                    .format(DateTime.parse(
-                                                        dataHorarydetaild?[0]
-                                                            ['fechaHora']))
+                                                    .format(DateTime.parse('${dataHorarydetaild?[0]['fechaFin']} ${dataHorarydetaild?[0]['horaFin']}'))
                                                     .toString(),
                                             style: TextStyle(
                                                 color: Colors.white,
@@ -225,23 +227,19 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
                                       onTap: () async {
                                         loading = true;
                                         setState(() {});
-                                        bool? validation = await Services().ReservationHorary(
-                                            context, widget.id.toString());
-                                        if(validation == true){
-
-                                        }else{
-                                          loading = false;
-                                          setState(() {});
+                                        if(reservation == false){
+                                          bool? validation = await Services().ReservationHorary(
+                                              context, widget.id.toString(), dataHorarydetaild?[0]['academiaId'].toString() ?? '');
+                                          if(validation == true){
+                                            loading = false;
+                                            reservation = true;
+                                            setState(() {});
+                                          }else{
+                                            loading = false;
+                                            reservation = false;
+                                            setState(() {});
+                                          }
                                         }
-                                        // Navigator.of(context).pushReplacement(PageRouteBuilder(
-                                        //     pageBuilder: (BuildContext context, _, __) {
-                                        //       return TabUserWidget(
-                                        //         page: 1,
-                                        //       );
-                                        //     }, transitionsBuilder:
-                                        //     (_, Animation<double> animation, __, Widget child) {
-                                        //   return FadeTransition(opacity: animation, child: child);
-                                        // }));
                                       },
                                       child: Container(
                                         width: responsive.width,
@@ -249,7 +247,7 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(100),
-                                          color: Colors.black,
+                                          color: reservation == true?Colors.green:Colors.black,
                                         ),
                                         child: Column(
                                           mainAxisAlignment:
@@ -258,7 +256,7 @@ class _ClassReservationScreenState extends State<ClassReservationScreen> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              'RESERVAR',
+                                              reservation == true?'RESERVADO':'RESERVAR',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: responsive.dp(2.0),

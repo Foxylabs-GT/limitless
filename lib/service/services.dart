@@ -175,18 +175,19 @@ class Services {
     }
   }
 
-  Future<bool?> ReservationHorary(BuildContext context, String horarioId) async {
+  Future<bool?> ReservationHorary(BuildContext context, String horarioId, String academiaid) async {
     dio.options.connectTimeout = connectTimeout;
     dio.options.receiveTimeout = receiveTimeout;
     String? idUser;
     final prefs = await SharedPreferences.getInstance();
     idUser = prefs.getString('idUserLimitless');
-    final data = {"horarioId": horarioId, "alumnoId": idUser};
+    final data = {"horarioId": horarioId, "alumnoId": idUser, 'academiaAlumnoId': academiaid};
     try {
       final response = await dio.post(url + '/api/horario-alumno/asignar', data: data);
       if (response.statusCode == 200) {
         print("datos de api");
         print(response.data.toString());
+        alertMessageReserve(context, 'Reservado');
         return true;
       }
     } on DioError catch (e) {
